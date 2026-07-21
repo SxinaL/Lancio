@@ -1,5 +1,6 @@
 <template>
-    <div class="vocab-card" :style="{ opacity: store.opacity }">
+    <!--  :style="{ backgroundColor: rabg(0,0,0,1)}" -->
+    <div class="vocab-card" :style="{ backgroundColor: `rgba(0,0,0,${settingStore.opacity})`}">
         <!-- 窗口边缘拖拽调整大小手柄 -->
         <div class="resize-handle top" @mousedown.prevent="startResize($event, 'top')"></div>
         <div class="resize-handle bottom" @mousedown.prevent="startResize($event, 'bottom')"></div>
@@ -19,11 +20,12 @@
 
 <script setup>
 import { onMounted, onUnmounted } from 'vue';
-import { store } from './store.js';
+import { store, settingStore} from './store.js';
 import ToolBar from './components/ToolBar.vue';
 import WordCard from './components/WordCard.vue';
 import ActionBar from './components/ActionBar.vue';
 import SettingsPanel from './components/SettingsPanel.vue';
+
 
 // ===== 窗口拖拽调整大小 =====
 let resizeState = null;
@@ -32,6 +34,7 @@ async function startResize(e, direction) {
     e.preventDefault();
     if (!window.runtime) return;
     let WindowPosition = await window.runtime.WindowGetPosition();
+    
     // 保存初始状态
     resizeState = {
         direction,
@@ -43,9 +46,7 @@ async function startResize(e, direction) {
         startScreenY: WindowPosition.y,
 
     };
-    console.log(window.screen)
-    console.log('resize', direction, resizeState);
-    console.log(window.runtime.WindowGetPosition());
+
     document.addEventListener('mousemove', onResizeMove);
     document.addEventListener('mouseup', onResizeEnd);
 }
@@ -78,10 +79,6 @@ async function onResizeMove(e) {
     let newHeight = startHeight;
     let newX = startScreenX;
     let newY = startScreenY;
-
-    // console.log(resizeState);
-    // console.log(direction, dx, dy);
-
 
 
     // 计算新尺寸
@@ -120,9 +117,7 @@ async function onResizeMove(e) {
     }
 
 
-    console.log(e.screenX, e.screenY)
-    console.log(startX, startY)
-    console.log(newX, newY, newWidth, newHeight)
+   
     // 先设置位置（如果有变化），再设置大小
     if (direction.includes('left') || direction.includes('top')) {
         window.runtime.WindowSetPosition(Math.round(newX), Math.round(newY));
@@ -182,8 +177,7 @@ body {
     width: 100%;
     height: 100%;
     /* background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%); */
-    background-color: #0000003e;
-
+    /* background: #1a1a2ecf; */
     display: flex;
     flex-direction: column;
     overflow: hidden;

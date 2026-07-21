@@ -6,7 +6,6 @@ export const store = reactive({
     showTranslation: false,
     isPinned: true,
     showSettings: false,
-    opacity: 1.0,
 
     async loadRandomWord() {
         try {
@@ -48,13 +47,17 @@ export const store = reactive({
         this.showSettings = false;
     },
 
+
+});
+
+// export const wordStore = reactive({
+
+// });
+
+export const settingStore = reactive({
+    opacity: 1.0,
     setOpacity(value) {
         const opacity = parseInt(value) / 100;
         this.opacity = opacity;
-        try {
-            SetOpacity(opacity);
-        } catch (e) {
-            // 静默处理
-        }
     },
 });

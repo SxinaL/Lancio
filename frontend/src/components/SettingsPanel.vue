@@ -19,10 +19,10 @@
                                     class="opacity-slider"
                                     min="10"
                                     max="100"
-                                    :value="Math.round(store.opacity * 100)"
-                                    @input="store.setOpacity($event.target.value)"
+                                    :value="Math.round(settingStore.opacity * 100)"
+                                    @input="settingStore.setOpacity($event.target.value)"
                                 />
-                                <span class="opacity-value">{{ Math.round(store.opacity * 100) }}%</span>
+                                <span class="opacity-value">{{ Math.round(settingStore.opacity * 100) }}%</span>
                             </div>
                         </div>
                     </div>
@@ -33,7 +33,7 @@
 </template>
 
 <script setup>
-import { store } from '../store.js';
+import { settingStore,store } from '../store.js';
 </script>
 
 <style scoped>
