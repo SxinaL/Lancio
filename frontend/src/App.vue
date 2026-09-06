@@ -20,11 +20,11 @@
 
 <script setup>
 import { onMounted, onUnmounted } from 'vue';
-import { store, settingStore} from './store.js';
-import ToolBar from './components/ToolBar.vue';
-import WordCard from './components/WordCard.vue';
-import ActionBar from './components/ActionBar.vue';
-import SettingsPanel from './components/SettingsPanel.vue';
+import { store, settingStore} from '@/store.js';
+import ToolBar from '@/components/floatwin/ToolBar.vue';
+import WordCard from '@/components/function/WordCard.vue';
+import ActionBar from '@/components/floatwin/ActionBar.vue';
+import SettingsPanel from '@/components/floatwin/SettingsPanel.vue';
 
 
 // ===== 窗口拖拽调整大小 =====

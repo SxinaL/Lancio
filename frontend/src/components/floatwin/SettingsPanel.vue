@@ -33,7 +33,7 @@
 </template>
 
 <script setup>
-import { settingStore,store } from '../store.js';
+import { settingStore,store } from '@/store.js';
 </script>
 
 <style scoped>

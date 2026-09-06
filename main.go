@@ -30,7 +30,7 @@ func main() {
 			Assets: assets,
 		},
 		// Frameless:        true,
-		AlwaysOnTop:      true,
+		AlwaysOnTop:      false,
 		BackgroundColour: &options.RGBA{R: 0, G: 0, B: 0, A: 0},
 		Windows: &windows.Options{
 			WebviewIsTransparent: true,

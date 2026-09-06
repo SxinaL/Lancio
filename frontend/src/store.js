@@ -1,4 +1,4 @@
-import { reactive } from 'vue';
+import { reactive,readonly } from 'vue';
 import { GetRandomWord, SetOpacity } from '../wailsjs/go/main/App';
 
 export const store = reactive({
@@ -55,9 +55,12 @@ export const store = reactive({
 // });
 
 export const settingStore = reactive({
-    opacity: 1.0,
+    opacity:0.3,
     setOpacity(value) {
         const opacity = parseInt(value) / 100;
         this.opacity = opacity;
     },
 });
+
+
+

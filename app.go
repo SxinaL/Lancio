@@ -1,16 +1,15 @@
 package main
 
 import (
-	"context"
-	"fmt"
-    "syscall"
-	"unsafe"
 	"DesktopVoc/database"
 	"DesktopVoc/services"
-	
+	"context"
+	"fmt"
+	"syscall"
+	"unsafe"
 
-	"github.com/wailsapp/wails/v2/pkg/runtime"
 	"github.com/gonutz/w32/v2"
+	"github.com/wailsapp/wails/v2/pkg/runtime"
 )
 
 // App 应用主结构体
@@ -101,37 +100,37 @@ var (
 )
 
 func FindWindow(className, windowName string) (hwnd syscall.Handle, err error) {
-    var cname, wname *uint16
-    if className != "" {
-        cname, err = syscall.UTF16PtrFromString(className)
-        if err != nil {
-            return 0, err
-        }
-    }
-    if windowName != "" {
-        wname, err = syscall.UTF16PtrFromString(windowName)
-        if err != nil {
-            return 0, err
-        }
-    }
-    r1, _, e1 := syscall.Syscall(findWindow.Addr(), 2, uintptr(unsafe.Pointer(cname)), uintptr(unsafe.Pointer(wname)), 0)
-    if r1 == 0 {
-        if e1 != 0 {
-            err = error(e1)
-        } else {
-            err = syscall.EINVAL
-        }
-    }
-    hwnd = syscall.Handle(r1)
-    return
+	var cname, wname *uint16
+	if className != "" {
+		cname, err = syscall.UTF16PtrFromString(className)
+		if err != nil {
+			return 0, err
+		}
+	}
+	if windowName != "" {
+		wname, err = syscall.UTF16PtrFromString(windowName)
+		if err != nil {
+			return 0, err
+		}
+	}
+	r1, _, e1 := syscall.Syscall(findWindow.Addr(), 2, uintptr(unsafe.Pointer(cname)), uintptr(unsafe.Pointer(wname)), 0)
+	if r1 == 0 {
+		if e1 != 0 {
+			err = error(e1)
+		} else {
+			err = syscall.EINVAL
+		}
+	}
+	hwnd = syscall.Handle(r1)
+	return
 }
 
 func (a *App) domReady(ctx context.Context) {
-	hwnd,err := FindWindow("", "DesktopVoc")
+	hwnd, err := FindWindow("", "DesktopVoc")
 	if err != nil {
-        fmt.Println("error", err)
-        return
-    }
+		fmt.Println("error", err)
+		return
+	}
 
 	go func() {
 		// 用 w32 库一行代码移除边框（已封装好 Get/SetWindowLongPtr）
