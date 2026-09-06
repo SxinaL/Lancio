@@ -1,16 +1,15 @@
-export namespace database {
+export namespace entity {
 	
-	export class Word {
+	export class Vocabulary {
 	    id: number;
 	    word: string;
 	    phonetic: string;
 	    translation: string;
-	    part_of_speech: string;
 	    example_sentence: string;
-	    difficulty: number;
+	    vocabulary_bank_id: number;
 	
 	    static createFrom(source: any = {}) {
-	        return new Word(source);
+	        return new Vocabulary(source);
 	    }
 	
 	    constructor(source: any = {}) {
@@ -19,42 +18,43 @@ export namespace database {
 	        this.word = source["word"];
 	        this.phonetic = source["phonetic"];
 	        this.translation = source["translation"];
-	        this.part_of_speech = source["part_of_speech"];
 	        this.example_sentence = source["example_sentence"];
-	        this.difficulty = source["difficulty"];
+	        this.vocabulary_bank_id = source["vocabulary_bank_id"];
+	    }
+	}
+	export class VocabularyBank {
+	    id: number;
+	    name: string;
+	    description: string;
+	
+	    static createFrom(source: any = {}) {
+	        return new VocabularyBank(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.id = source["id"];
+	        this.name = source["name"];
+	        this.description = source["description"];
 	    }
 	}
 
 }
 
-export namespace services {
+export namespace handler {
 	
-	export class WordDetail {
-	    word: string;
-	    phonetic_us: string;
-	    phonetic_uk: string;
-	    translation: string;
-	    part_of_speech: string;
-	    definitions: string[];
-	    examples: string[];
-	    synonyms: string[];
-	    antonyms: string[];
+	export class MinSize {
+	    WindowSizeMinW: number;
+	    WindowSizeMinH: number;
 	
 	    static createFrom(source: any = {}) {
-	        return new WordDetail(source);
+	        return new MinSize(source);
 	    }
 	
 	    constructor(source: any = {}) {
 	        if ('string' === typeof source) source = JSON.parse(source);
-	        this.word = source["word"];
-	        this.phonetic_us = source["phonetic_us"];
-	        this.phonetic_uk = source["phonetic_uk"];
-	        this.translation = source["translation"];
-	        this.part_of_speech = source["part_of_speech"];
-	        this.definitions = source["definitions"];
-	        this.examples = source["examples"];
-	        this.synonyms = source["synonyms"];
-	        this.antonyms = source["antonyms"];
+	        this.WindowSizeMinW = source["WindowSizeMinW"];
+	        this.WindowSizeMinH = source["WindowSizeMinH"];
 	    }
 	}
 
