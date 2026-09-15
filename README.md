@@ -57,10 +57,11 @@ Lancio/
 │       ├── vocabulary_method.go    # 单词 CRUD
 │       └── vocabularybank_method.go # 词库 CRUD
 ├── handler/                        # Wails 绑定层（暴露给前端）
+│   ├── config_handler.go           # 应用配置读写
 │   ├── dictionary_handler.go       # 在线词典查询
 │   ├── taskbar_handler.go          # 系统托盘（最小化/恢复）
-│   ├── vocabulary_handler.go       # 单词增删改查
-│   ├── vocabularybank_handler.go   # 词库管理 & 随机取词
+│   ├── vocabulary_handler.go       # 单词增删改查 + 复习状态管理
+│   ├── vocabularybank_handler.go   # 词库管理 + 复习计划取词
 │   └── window_handler.go           # 窗口控制（置顶/透明度/位置）
 ├── model/                          # 共享模型 & 全局状态
 │   ├── app.go                      # App 全局实例
@@ -158,6 +159,8 @@ wails build
 | `UpdateVocabulary(vocabulary)` | 更新单词 |
 | `DeleteVocabulary(id)` | 删除单词 |
 | `GetStarStatus(word)` | 获取单词收藏状态 |
+| `IncrementReviewCount(id)` | 单词复习次数 +1 |
+| `SetReviewStatus(id, status)` | 设置单词本轮复习状态（unselected/pending/reviewed） |
 
 ### 词库管理（VocabularyBankHandler）
 
@@ -170,6 +173,19 @@ wails build
 | `GetRandomVocabulary()` | 随机获取单词（按选中词库） |
 | `GetSelectedVocabularyBankID()` | 获取当前选中词库 ID |
 | `SetSelectedVocabularyBankID(id)` | 设置当前选中词库 |
+| `GetReviewWords(count)` | 开启新一轮复习：按复习次数升序抽取 count 个单词，标记为 pending |
+| `GetActiveReviewWords()` | 获取本轮进行中的复习单词（pending + reviewed），用于恢复进度 |
+| `ResetReviewRound()` | 将本轮所有 reviewed 单词重置为 unselected |
+
+### 配置管理（ConfigHandler）
+
+| 方法 | 说明 |
+|------|------|
+| `GetReviewWordsPerSession()` | 获取每次复习抽取的单词数量 |
+| `SetReviewWordsPerSession(count)` | 设置每次复习抽取的单词数量 |
+| `SaveBaiduConfig(appid, key)` | 保存百度翻译 API 密钥 |
+| `GetBaiduConfig()` | 获取百度翻译 API 密钥 |
+| `TestAPIConnection(appid, key)` | 测试百度 API 连接 |
 
 ### 窗口控制（WindowHandler）
 
@@ -213,12 +229,40 @@ wails build
   "apiConfigKey": {
     "appid": "",
     "key": ""
-  }
+  },
+  "startHidden": false,
+  "reviewWordsPerSession": 10
 }
 ```
 
 - `selectedVocabularyBankID`: 0 表示从所有词库随机取词；> 0 表示从指定词库取词
 - `apiConfigKey`: 百度翻译 API 密钥（用于长文本翻译），有道词典无需密钥
+- `startHidden`: 启动时是否隐藏主窗口
+- `reviewWordsPerSession`: 每次复习从数据库抽取的单词数量，默认 10
+
+## 复习计划
+
+### 状态流转
+
+每个单词维护 `review_status`（本轮状态）和 `review_count`（累计复习次数）：
+
+```
+unselected ──[开启新一轮]──▶ pending ──[认识]──▶ reviewed ──[本轮完成]──▶ unselected
+                                │                       
+                                └──[不认识]──▶ pending（回到队尾）
+```
+
+- **unselected**：未参与本轮复习
+- **pending**：本轮待复习，不认识会回到队列尾部循环
+- **reviewed**：本轮已认识，复习次数 +1
+
+### 取词策略
+
+开启新复习时，优先抽取上一轮残留的 `pending` 单词，不足时从 `unselected` 中按 **复习次数升序** 补足（复习次数少的优先）。
+
+### 进度恢复
+
+页面加载时自动检测是否有进行中的复习轮次（`pending` + `reviewed`），有则直接恢复，刷新或切换页面不丢失进度。
 
 ## 自定义词库
 
