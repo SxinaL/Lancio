@@ -16,4 +16,8 @@ export function GetWordsByRange(arg1:number,arg2:number):Promise<Array<entity.Vo
 
 export function GetWordsByVocabularyBankID(arg1:number):Promise<Array<entity.Vocabulary>>;
 
+export function IncrementReviewCount(arg1:number):Promise<void>;
+
+export function SetReviewStatus(arg1:number,arg2:string):Promise<void>;
+
 export function UpdateVocabulary(arg1:entity.Vocabulary):Promise<void>;

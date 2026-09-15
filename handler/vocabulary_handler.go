@@ -77,3 +77,19 @@ func (vocHandler *VocabularyHandler) GetStarStatus(word string) (entity.Vocabula
 	w, err := model.AppInstance.Db.GetByWord(word)
 	return w, err
 }
+
+// IncrementReviewCount 增加单词复习次数 +1
+func (vocHandler *VocabularyHandler) IncrementReviewCount(id int64) error {
+	if model.AppInstance.Db == nil {
+		return fmt.Errorf("数据库未初始化")
+	}
+	return model.AppInstance.Db.IncrementReviewCount(id)
+}
+
+// SetReviewStatus 设置单词复习状态
+func (vocHandler *VocabularyHandler) SetReviewStatus(id int64, status string) error {
+	if model.AppInstance.Db == nil {
+		return fmt.Errorf("数据库未初始化")
+	}
+	return model.AppInstance.Db.SetReviewStatus(id, status)
+}

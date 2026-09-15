@@ -7,7 +7,7 @@ import (
 	"fmt"
 )
 
-type VocabularyBankHandler struct {}
+type VocabularyBankHandler struct{}
 
 // NewBankHandler 创建词库处理程序
 func NewBankHandler() *VocabularyBankHandler {
@@ -100,4 +100,31 @@ func (vb *VocabularyBankHandler) SetSelectedVocabularyBankID(id int64) error {
 	}
 	cfg.SelectedVocabularyBankID = id
 	return utils.SaveConfig()
+}
+
+// GetReviewWords 开启新一轮复习：重置已复习 → 获取待复习 + 新单词 → 全部设为待复习
+func (vb *VocabularyBankHandler) GetReviewWords(count int) ([]entity.Vocabulary, error) {
+	db := model.AppInstance.Db
+	if db == nil {
+		return nil, fmt.Errorf("数据库未初始化")
+	}
+	return db.StartNewReviewRound(count)
+}
+
+// GetActiveReviewWords 获取当前轮次进行中的复习单词（pending + reviewed），用于页面加载时恢复进度
+func (vb *VocabularyBankHandler) GetActiveReviewWords() ([]entity.Vocabulary, error) {
+	db := model.AppInstance.Db
+	if db == nil {
+		return nil, fmt.Errorf("数据库未初始化")
+	}
+	return db.GetActiveReviewWords()
+}
+
+// ResetReviewRound 一轮复习完成后重置所有reviewed→unselected，为下一轮做准备
+func (vb *VocabularyBankHandler) ResetReviewRound() error {
+	db := model.AppInstance.Db
+	if db == nil {
+		return fmt.Errorf("数据库未初始化")
+	}
+	return db.ResetReviewRound()
 }

@@ -4,9 +4,9 @@
     <!-- ===== 页面标题 ===== -->
     <div class="page-header">
       <h2 class="page-title">
-        单词管理
+        📝 单词管理
+        <span class="title-meta">管理你的词库</span>
       </h2>
-
     </div>
 
     <!-- ===== 词库列表 ===== -->
@@ -194,29 +194,29 @@ async function confirmDelete() {
   flex-direction: column;
   padding: 16px 24px;
   overflow: hidden;
-  gap: 16px;
+  gap: 28px;
   /* border: 1px solid rgb(255, 0, 0); */
 }
 
 /* ===== 页面头部 ===== */
 .page-header {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-bottom: 16px;
   flex-shrink: 0;
-  /* border: 1px solid rgb(255, 0, 0); */
 }
 
 .page-title {
   display: flex;
-  align-items: center;
+  align-items: baseline;
   gap: 10px;
-  font-size: 28px;
+  font-size: 22px;
   font-weight: 700;
   color: rgba(255, 255, 255, 0.9);
   margin: 0;
-  margin-top: 5px;
+}
+
+.title-meta {
+  font-size: 12px;
+  font-weight: 400;
+  color: rgba(255, 255, 255, 0.4);
 }
 
 .title-icon {

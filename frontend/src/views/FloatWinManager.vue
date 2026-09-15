@@ -3,20 +3,28 @@
     <!-- ===== 页面头部 ===== -->
     <div class="page-header">
       <h2 class="page-title">
-        浮窗控制
+       🪟 浮窗控制
+        <span class="title-meta">控制桌面浮窗的显示与隐藏</span>
       </h2>
     </div>
 
     <!-- ===== 控制项列表 ===== -->
     <div class="control-list">
       <FloatControlItem
-        v-for="control in controls"
-        :key="control.name"
-        :name="control.name"
-        :icon="control.icon"
+        name="单词显示"
         :running="floatRunning"
-        @toggle="toggleFloat(control.windowName)"
-      />
+        @toggle="toggleFloat('LancioFloat')"
+      >
+        <template #icon>
+          <svg width="22" height="22" viewBox="0 0 22 22">
+            <rect x="2" y="4" width="18" height="14" rx="2" stroke="currentColor" stroke-width="1.3" fill="none"/>
+            <line x1="2" y1="8" x2="20" y2="8" stroke="currentColor" stroke-width="1.3"/>
+            <circle cx="5.5" cy="6" r="0.8" fill="#ef4444"/>
+            <circle cx="8" cy="6" r="0.8" fill="#f59e0b"/>
+            <circle cx="10.5" cy="6" r="0.8" fill="#22c55e"/>
+          </svg>
+        </template>
+      </FloatControlItem>
     </div>
 
     <!-- ===== 状态提示 ===== -->
@@ -33,15 +41,6 @@ import ToastMessage from '@/components/floatwinmanager/ToastMessage.vue'
 const floatRunning = ref(false)
 const message = ref('')
 const messageType = ref('info')
-
-// 浮窗控制项列表
-const controls = [
-  {
-    name: '单词显示',
-    windowName: 'LancioFloat',
-    icon: 'M3 5h8v6H3V5zm10 0h8v6h-8V5zM3 13h8v6H3v-6zm10 0h8v6h-8v-6z',
-  },
-]
 
 async function loadStatus(windowName) {
   try {
@@ -67,11 +66,7 @@ async function toggleFloat(windowName) {
 }
 
 onMounted(() => {
-  if (controls.length > 0) {
-    for (let i = 0; i < controls.length; i++) {
-      loadStatus(controls[i].windowName)
-    }
-  } 
+  loadStatus('LancioFloat')
 })
 </script>
 
@@ -84,27 +79,33 @@ onMounted(() => {
   flex-direction: column;
   padding: 16px 24px;
   overflow: hidden;
-  gap: 16px;
+  gap: 28px;
 }
 
 /* ===== 页面头部 ===== */
 .page-header {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-bottom: 16px;
   flex-shrink: 0;
 }
 
 .page-title {
   display: flex;
-  align-items: center;
+  align-items: baseline;
   gap: 10px;
-  font-size: 28px;
+  font-size: 22px;
   font-weight: 700;
   color: rgba(255, 255, 255, 0.9);
   margin: 0;
-  margin-top: 5px;
+}
+
+.title-meta {
+  font-size: 12px;
+  font-weight: 400;
+  color: rgba(255, 255, 255, 0.4);
+}
+
+.title-icon-svg {
+  flex-shrink: 0;
+  color: rgba(255, 255, 255, 0.55);
 }
 
 /* ===== 控制项列表 ===== */

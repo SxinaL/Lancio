@@ -12,7 +12,7 @@
 </template>
 
 <script setup>
-import { onMounted, onUnmounted } from 'vue';
+import { onMounted, onUnmounted, provide } from 'vue';
 import { VocFloatWinStore, WordStore } from '@/store.js';
 import ToolBar from '@/components/vocfloatwin/ToolBar.vue';
 import WordCard from '@/components/vocfloatwin/WordCard.vue';
@@ -24,6 +24,20 @@ import ResizeHandles from '@/components/vocfloatwin/ResizeHandles.vue';
 // ===== 自动轮换单词定时器 =====
 let wordTimer = null
 const WORD_INTERVAL = 30000 // 30秒换一个单词
+
+function resetTimer() {
+  if (wordTimer) {
+    clearInterval(wordTimer)
+    wordTimer = null
+  }
+  if (!VocFloatWinStore.isPinned) {
+    wordTimer = setInterval(() => {
+      WordStore.loadRandomWord()
+    }, WORD_INTERVAL)
+  }
+}
+
+provide('resetTimer', resetTimer)
 
 // 处理划词结果：接收后端广播的 Vocabulary 对象
 // { word, phonetic, translation, example_sentence }

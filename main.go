@@ -25,24 +25,27 @@ var assets embed.FS
 
 //go:embed build/windows/Lancio.ico
 var trayIcon []byte
-func initHandlers() (*handler.WindowHandler, *handler.VocabularyHandler, *handler.VocabularyBankHandler, *handler.TaskbarHandler) {
+
+func initHandlers() (*handler.WindowHandler, *handler.VocabularyHandler, *handler.VocabularyBankHandler, *handler.TaskbarHandler, *handler.ConfigHandler) {
 	window_handler := handler.NewWindowHandler()
 	vocabulary_handler := handler.NewVocabularyHandler()
 	vocabularybank_handler := handler.NewBankHandler()
 	taskbar_handler := handler.NewTaskbarHandler()
-	return window_handler, vocabulary_handler, vocabularybank_handler, taskbar_handler
+	config_handler := handler.NewConfigHandler()
+	return window_handler, vocabulary_handler, vocabularybank_handler, taskbar_handler, config_handler
 }
+
 // RunMainWindow 运行主窗口 (800x600)
 func RunMainWindow() error {
-	window_handler, vocabulary_handler, vocabularybank_handler, taskbar_handler := initHandlers()
-	
+	window_handler, vocabulary_handler, vocabularybank_handler, taskbar_handler, config_handler := initHandlers()
+
 	window := model.WindowInstance
 	err := wails.Run(&options.App{
-		Title:     window.WindowName,
-		Width:     800,
-		Height:    600,
-		MinWidth:  100,
-		MinHeight: 100,
+		Title:       window.WindowName,
+		Width:       800,
+		Height:      600,
+		MinWidth:    100,
+		MinHeight:   100,
 		StartHidden: model.AppConfig.StartHidden,
 		AssetServer: &assetserver.Options{
 			Assets: assets,
@@ -65,6 +68,7 @@ func RunMainWindow() error {
 			vocabulary_handler,
 			vocabularybank_handler,
 			taskbar_handler,
+			config_handler,
 		},
 	})
 
@@ -76,11 +80,11 @@ func RunMainWindow() error {
 }
 
 // RunFloatWindow 运行浮窗 (275x300, 无边框透明)
-func RunFloatWindow()  error {
+func RunFloatWindow() error {
 	window := model.WindowInstance
 	cfg := model.AppConfig
-	window_handler, vocabulary_handler, vocabularybank_handler, taskbar_handler := initHandlers()
-	
+	window_handler, vocabulary_handler, vocabularybank_handler, taskbar_handler, config_handler := initHandlers()
+
 	err := wails.Run(&options.App{
 		Title:     window.WindowName,
 		Width:     cfg.WindowFloatConfigs[window.WindowName].WindowSizeW,
@@ -114,6 +118,7 @@ func RunFloatWindow()  error {
 			vocabulary_handler,
 			vocabularybank_handler,
 			taskbar_handler,
+			config_handler,
 		},
 	})
 
@@ -123,32 +128,32 @@ func RunFloatWindow()  error {
 	}
 	return nil
 }
-func LogInit(){
+func LogInit() {
 	exePath, err := os.Executable()
 	if err != nil {
-        // 如果获取失败，就退而求其次存到当前工作目录
-        exePath = "."
-    }
+		// 如果获取失败，就退而求其次存到当前工作目录
+		exePath = "."
+	}
 	logDir := filepath.Dir(exePath)
-    logFile := filepath.Join(logDir, "Lancio.log")
-	  f, err := os.OpenFile(logFile, os.O_CREATE|os.O_APPEND|os.O_WRONLY, 0644)
-    if err != nil {
-        // 如果连 exe 目录都写不了（比如装在 Program Files 里权限不够），就写到用户临时目录
-        tmpDir := os.TempDir()
-        logFile = filepath.Join(tmpDir, "lancio.log")
-        f, _ = os.OpenFile(logFile, os.O_CREATE|os.O_APPEND|os.O_WRONLY, 0644)
-    }
+	logFile := filepath.Join(logDir, "Lancio.log")
+	f, err := os.OpenFile(logFile, os.O_CREATE|os.O_APPEND|os.O_WRONLY, 0644)
+	if err != nil {
+		// 如果连 exe 目录都写不了（比如装在 Program Files 里权限不够），就写到用户临时目录
+		tmpDir := os.TempDir()
+		logFile = filepath.Join(tmpDir, "lancio.log")
+		f, _ = os.OpenFile(logFile, os.O_CREATE|os.O_APPEND|os.O_WRONLY, 0644)
+	}
 
-    // 3. 关键命令：让标准库 log 包的所有输出都指向这个文件
-    log.SetOutput(f)
+	// 3. 关键命令：让标准库 log 包的所有输出都指向这个文件
+	log.SetOutput(f)
 
-    // 4. 给每条日志加上日期时间和文件名行号，否则根本不知道是哪一秒卡死的
-    log.SetFlags(log.LstdFlags | log.Lshortfile)
-    
-    log.Println("======= 日志启动 =======")
+	// 4. 给每条日志加上日期时间和文件名行号，否则根本不知道是哪一秒卡死的
+	log.SetFlags(log.LstdFlags | log.Lshortfile)
+
+	log.Println("======= 日志启动 =======")
 
 }
-func HotKeyInit(){
+func HotKeyInit() {
 	utils.StartHotkeyListener(
 		utils.HotkeyEntry{
 			Modifiers: utils.ModAlt | utils.ModCtrl,
@@ -157,7 +162,6 @@ func HotKeyInit(){
 		},
 	)
 	// 注册热键
-
 
 }
 func main() {

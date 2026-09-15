@@ -23,9 +23,10 @@ type APIConfigKey struct {
 
 // Config 应用配置结构
 type Config struct {
-	WindowFloatConfigs map[string]*WindowFloatConfig `json:"windowFloatConfig"`
-	APIConfigKey       APIConfigKey                  `json:"apiConfigKey"`
-	StartHidden        bool                          `json:"startHidden"`
+	WindowFloatConfigs    map[string]*WindowFloatConfig `json:"windowFloatConfig"`
+	APIConfigKey          APIConfigKey                  `json:"apiConfigKey"`
+	StartHidden           bool                          `json:"startHidden"`
+	ReviewWordsPerSession int                           `json:"reviewWordsPerSession"`
 }
 
 // defaultConfig 返回默认配置（autoStart 默认开启）
@@ -50,7 +51,8 @@ func DefaultConfig() *Config {
 			LANCIO_APPID:   "",
 			LANCIO_API_KEY: "",
 		},
-		StartHidden: true,
+		StartHidden:           true,
+		ReviewWordsPerSession: 10,
 	}
 }
 

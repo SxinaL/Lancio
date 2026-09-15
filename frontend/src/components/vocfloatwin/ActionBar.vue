@@ -1,6 +1,6 @@
 <template>
     <div v-if="!VocFloatWinStore.isPinned" class="action-bar">
-        <button class="action-btn primary" @click="WordStore.nextWord()">
+        <button class="action-btn primary" @click="handleNext">
             <!-- <span class="btn-icon"></span> -->
             下一个
         </button>
@@ -12,7 +12,15 @@
 </template>
 
 <script setup>
-import { WordStore,VocFloatWinStore} from '@/store.js';
+import { inject } from 'vue'
+import { WordStore, VocFloatWinStore } from '@/store.js'
+
+const resetTimer = inject('resetTimer')
+
+function handleNext() {
+  WordStore.nextWord()
+  resetTimer?.()
+}
 </script>
 
 <style scoped>

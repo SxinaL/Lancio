@@ -6,12 +6,18 @@ export function CreateVocabularyBank(arg1:string,arg2:string):Promise<entity.Voc
 
 export function DeleteVocabularyBank(arg1:number):Promise<void>;
 
+export function GetActiveReviewWords():Promise<Array<entity.Vocabulary>>;
+
 export function GetAllVocabularyBanks():Promise<Array<entity.VocabularyBank>>;
 
 export function GetRandomVocabulary():Promise<entity.Vocabulary>;
 
+export function GetReviewWords(arg1:number):Promise<Array<entity.Vocabulary>>;
+
 export function GetSelectedVocabularyBankID():Promise<number>;
 
 export function GetVocabularyCountByVocabularyBankID(arg1:number):Promise<number>;
+
+export function ResetReviewRound():Promise<void>;
 
 export function SetSelectedVocabularyBankID(arg1:number):Promise<void>;

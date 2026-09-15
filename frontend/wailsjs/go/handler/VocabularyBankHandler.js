@@ -10,6 +10,10 @@ export function DeleteVocabularyBank(arg1) {
   return window['go']['handler']['VocabularyBankHandler']['DeleteVocabularyBank'](arg1);
 }
 
+export function GetActiveReviewWords() {
+  return window['go']['handler']['VocabularyBankHandler']['GetActiveReviewWords']();
+}
+
 export function GetAllVocabularyBanks() {
   return window['go']['handler']['VocabularyBankHandler']['GetAllVocabularyBanks']();
 }
@@ -18,12 +22,20 @@ export function GetRandomVocabulary() {
   return window['go']['handler']['VocabularyBankHandler']['GetRandomVocabulary']();
 }
 
+export function GetReviewWords(arg1) {
+  return window['go']['handler']['VocabularyBankHandler']['GetReviewWords'](arg1);
+}
+
 export function GetSelectedVocabularyBankID() {
   return window['go']['handler']['VocabularyBankHandler']['GetSelectedVocabularyBankID']();
 }
 
 export function GetVocabularyCountByVocabularyBankID(arg1) {
   return window['go']['handler']['VocabularyBankHandler']['GetVocabularyCountByVocabularyBankID'](arg1);
+}
+
+export function ResetReviewRound() {
+  return window['go']['handler']['VocabularyBankHandler']['ResetReviewRound']();
 }
 
 export function SetSelectedVocabularyBankID(arg1) {

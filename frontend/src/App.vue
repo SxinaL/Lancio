@@ -6,6 +6,7 @@
 import { onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { GetWindowMode } from '../wailsjs/go/handler/WindowHandler'
+import { EnsureAPIConfigured } from '../wailsjs/go/handler/ConfigHandler'
 
 const router = useRouter()
 
@@ -15,10 +16,14 @@ onMounted(async () => {
     if (mode === 'float') {
       router.push('/float')
     } else {
-      router.push('/main/bank-manager')
+      const configured = await EnsureAPIConfigured()
+      if (configured) {
+        router.push('/main/bank-manager')
+      } else {
+        router.push('/main/config')
+      }
     }
   } catch (err) {
-    // 非 Wails 环境（如纯浏览器调试）默认走主窗口
     router.push('/main/bank-manager')
   }
 })

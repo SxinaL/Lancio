@@ -2,7 +2,7 @@
     <nav class="side-bar">
         <div class="side-nav">
             <RouterLink v-for="item in navItems" :key="item.id" class="nav-item"
-                :class="{ active: activeNav === item.id }" @click="activeNav = item.id" :title="item.label" :to="item.link">
+                :class="{ active: activeNav === item.id }" :title="item.label" :to="item.link">
                 <span class="nav-icon">{{ item.icon }}</span>
                 {{ item.label }}
             </RouterLink>
@@ -18,18 +18,30 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { computed } from 'vue'
+import { useRouter, useRoute } from 'vue-router'
 
-const activeNav = ref('words')
+const router = useRouter()
+const route = useRoute()
+
+// 根据当前路由路径自动匹配高亮的导航项
+const activeNav = computed(() => {
+  const path = route.path
+  if (path.includes('/voc-manager') || path.includes('/bank-manager')) return 'words'
+  if (path.includes('/review-plan')) return 'review'
+  if (path.includes('/float-manager')) return 'float'
+  return ''
+})
 
 const navItems = [
     { id: 'words', icon: '📝', label: '单词管理', link: '/main/bank-manager' },
-    { id: 'review', icon: '🔄', label: '复习计划', link: '' },
-    { id: 'stats', icon: '📊', label: '学习统计', link: '' },
+    { id: 'review', icon: '🔄', label: '复习计划', link: '/main/review-plan' },
+    // { id: 'stats', icon: '📊', label: '学习统计', link: '' },
     { id: 'float', icon: '🪟', label: '浮窗控制', link: '/main/float-manager' },
 ]
 
 function onSettings() {
+    router.push('/main/config')
 }
 </script>
 

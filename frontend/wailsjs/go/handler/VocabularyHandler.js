@@ -30,6 +30,14 @@ export function GetWordsByVocabularyBankID(arg1) {
   return window['go']['handler']['VocabularyHandler']['GetWordsByVocabularyBankID'](arg1);
 }
 
+export function IncrementReviewCount(arg1) {
+  return window['go']['handler']['VocabularyHandler']['IncrementReviewCount'](arg1);
+}
+
+export function SetReviewStatus(arg1, arg2) {
+  return window['go']['handler']['VocabularyHandler']['SetReviewStatus'](arg1, arg2);
+}
+
 export function UpdateVocabulary(arg1) {
   return window['go']['handler']['VocabularyHandler']['UpdateVocabulary'](arg1);
 }

@@ -31,7 +31,16 @@ const router = createRouter({
                     name: 'FloatWinManager',
                     component: () => import('@/views/FloatWinManager.vue'),
                 },
-                
+                {
+                    path: 'config',
+                    name: 'ConfigPannel',
+                    component: () => import('@/views/ConfigPannel.vue'),
+                },
+                {
+                    path: 'review-plan',
+                    name: 'ReviewPlan',
+                    component: () => import('@/views/ReviewPlan.vue'),
+                },
             ],
         },
         // ===== 浮窗路由 =====

@@ -7,6 +7,8 @@ export namespace entity {
 	    translation: string;
 	    example_sentence: string;
 	    vocabulary_bank_id: number;
+	    review_count: number;
+	    review_status: string;
 	
 	    static createFrom(source: any = {}) {
 	        return new Vocabulary(source);
@@ -20,6 +22,8 @@ export namespace entity {
 	        this.translation = source["translation"];
 	        this.example_sentence = source["example_sentence"];
 	        this.vocabulary_bank_id = source["vocabulary_bank_id"];
+	        this.review_count = source["review_count"];
+	        this.review_status = source["review_status"];
 	    }
 	}
 	export class VocabularyBank {
@@ -43,6 +47,20 @@ export namespace entity {
 
 export namespace handler {
 	
+	export class APIConfigKey {
+	    appid: string;
+	    key: string;
+	
+	    static createFrom(source: any = {}) {
+	        return new APIConfigKey(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.appid = source["appid"];
+	        this.key = source["key"];
+	    }
+	}
 	export class MinSize {
 	    WindowSizeMinW: number;
 	    WindowSizeMinH: number;

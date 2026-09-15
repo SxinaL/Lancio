@@ -15,6 +15,8 @@
 - 🎚️ **透明度调节** — 自由调节浮窗透明度
 - 🖱️ **拖拽缩放** — 支持拖拽移动和边缘缩放窗口
 - 📋 **系统托盘** — 最小化到托盘，后台静默运行
+- ⚙️ **配置面板** — 百度翻译 API 密钥配置 + 复习计划参数设置
+- 🔄 **复习计划** — 按复习次数智能抽取单词，队列式翻转卡片复习，记录复习状态
 
 ## 技术栈
 
@@ -93,6 +95,8 @@ Lancio/
 │       │   ├── MainWin.vue         # 主窗口布局
 │       │   ├── BankManager.vue     # 词库管理页
 │       │   ├── VocManager.vue      # 单词管理页
+│       │   ├── ConfigPannel.vue    # 配置面板页
+│       │   ├── ReviewPlan.vue      # 复习计划页
 │       │   ├── FloatWinManager.vue # 浮窗管理页
 │       │   └── VocFloatWin.vue     # 浮窗展示页
 │       ├── components/             # 组件
@@ -100,7 +104,9 @@ Lancio/
 │       │   ├── bankmanager/        # 词库管理组件（添加/删除面板）
 │       │   ├── vocmanager/         # 单词管理组件（表格/编辑/删除）
 │       │   ├── vocfloatwin/        # 浮窗组件（单词卡片/操作栏/设置）
-│       │   └── floatwinmanager/    # 浮窗管理组件
+│       │   ├── floatwinmanager/    # 浮窗管理组件
+│       │   ├── configpanel/        # 配置面板组件
+│       │   └── reviewplan/         # 复习计划组件
 │       └── template/               # 公共模板组件
 └── build/
     ├── appicon.png                 # 应用图标

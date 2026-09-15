@@ -1,7 +1,6 @@
 package api
 
 import (
-
 	"Lancio/model"
 	"crypto/md5"
 	"encoding/hex"
@@ -159,4 +158,41 @@ func mapErrCode(code, msg string) string {
 		return fmt.Sprintf("%s（%s）", desc, msg)
 	}
 	return msg
+}
+
+func TestBaiduConnection(appID, secretKey string) error {
+	if appID == "" || secretKey == "" {
+		return fmt.Errorf("APP ID 或 API Key 为空")
+	}
+	salt := baiduSalt()
+	sign := baiduSign(appID, secretKey, "test", salt)
+	form := url.Values{}
+	form.Set("q", "test")
+	form.Set("from", "auto")
+	form.Set("to", "zh")
+	form.Set("appid", appID)
+	form.Set("salt", salt)
+	form.Set("sign", sign)
+	req, err := http.NewRequest("POST", baiduEndpoint, strings.NewReader(form.Encode()))
+	if err != nil {
+		return fmt.Errorf("创建请求失败: %w", err)
+	}
+	req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
+	resp, err := baiduHTTP.Do(req)
+	if err != nil {
+		return fmt.Errorf("请求百度翻译失败: %w", err)
+	}
+	defer resp.Body.Close()
+	body, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return fmt.Errorf("读取响应失败: %w", err)
+	}
+	var result BaiduTransResponse
+	if err := json.Unmarshal(body, &result); err != nil {
+		return fmt.Errorf("解析响应失败: %w", err)
+	}
+	if result.ErrorCode != "" {
+		return fmt.Errorf(mapErrCode(result.ErrorCode, result.ErrorMsg))
+	}
+	return nil
 }

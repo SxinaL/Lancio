@@ -2,9 +2,11 @@
     <div class="control-item">
         <div class="control-info">
             <div class="control-icon">
-                <svg width="22" height="22" viewBox="0 0 24 24">
-                    <path fill="currentColor" :d="icon" />
-                </svg>
+                <slot name="icon">
+                    <svg width="22" height="22" viewBox="0 0 24 24">
+                        <path fill="currentColor" :d="icon" />
+                    </svg>
+                </slot>
             </div>
             <div class="control-detail">
                 <span class="control-name">{{ name }}</span>
